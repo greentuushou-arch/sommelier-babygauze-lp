@@ -78,7 +78,7 @@ a{ text-decoration:none; color:inherit; }
 .header-inner{
   display:flex; align-items:baseline; justify-content:center; gap:10px; padding:12px 16px;
 }
-.header-brand{ font-family:"Zen Maru Gothic",sans-serif; font-weight:900; font-size:1rem; color:var(--ink); letter-spacing:.06em; }
+.header-logo{ height:15px; width:auto; display:block; }
 .header-tag{ font-size:.66rem; color:var(--blush-deep); font-weight:700; letter-spacing:.1em; }
 .header-spacer{ height:46px; }
 
@@ -121,29 +121,43 @@ a{ text-decoration:none; color:inherit; }
 
 /* ===================== クーポン(CSSチケット) ===================== */
 .coupon-area{ padding:26px 26px 34px; }
+
+/* --- クーポン(チケット風・紙吹雪バースト対応) --- */
+.coupon-wrap{ position:relative; max-width:440px; margin:0 auto; }
+.confetti{ position:absolute; inset:0; z-index:5; pointer-events:none; overflow:visible; }
+.confetti-piece{
+  position:absolute; top:14%; left:50%; opacity:0; will-change:transform,opacity;
+}
+.confetti.is-burst .confetti-piece{ animation:confetti-burst 1.5s ease-out forwards; }
+@keyframes confetti-burst{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) scale(.3); opacity:0; }
+  12%{ opacity:1; }
+  100%{ transform:translate(calc(-50% + var(--cx)), calc(-50% + var(--cy))) rotate(var(--cr)) scale(1); opacity:0; }
+}
 .coupon{
-  position:relative; max-width:460px; margin:0 auto;
-  background:var(--white); border:2px dashed var(--blush-deep); border-radius:18px;
-  padding:22px 20px; text-align:center;
-  box-shadow:0 10px 26px rgba(210,127,114,.18);
+  position:relative; z-index:1;
+  background:var(--white); border-radius:22px; padding:0 20px 20px; text-align:center;
+  box-shadow:0 16px 38px rgba(210,127,114,.32);
+  border:1px solid rgba(226,154,142,.3);
+  overflow:hidden;
+  animation:coupon-pop 3s ease-in-out infinite;
 }
-.coupon::before,.coupon::after{
-  content:''; position:absolute; top:50%; width:22px; height:22px; border-radius:50%;
-  background:var(--cream); transform:translateY(-50%);
+@keyframes coupon-pop{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.018); } }
+.coupon-top{
+  margin:0 -20px 14px; padding:11px 12px;
+  background:linear-gradient(135deg, var(--accent), var(--blush-deep));
+  color:var(--white); font-family:"Zen Maru Gothic",sans-serif; font-weight:700;
+  font-size:.82rem; letter-spacing:.06em;
 }
-.coupon::before{ left:-13px; }
-.coupon::after{ right:-13px; }
-.coupon-label{
-  display:inline-block; font-family:"Zen Maru Gothic",sans-serif; font-weight:700;
-  font-size:.72rem; letter-spacing:.08em; color:var(--white);
-  background:var(--accent-deep); border-radius:999px; padding:4px 14px; margin-bottom:12px;
-}
+.coupon-top .heart{ margin:0 5px; }
+.coupon-sub{ font-family:"Zen Maru Gothic",sans-serif; font-weight:700; font-size:.72rem; color:var(--blush-deep); letter-spacing:.06em; margin:0 0 6px; }
 .coupon-amount{ font-family:"Zen Maru Gothic",sans-serif; font-weight:900; color:var(--accent-deep); line-height:1; }
-.coupon-amount .num{ font-size:3.4rem; }
-.coupon-amount .yen{ font-size:1.4rem; }
-.coupon-amount .off{ font-size:1.4rem; margin-left:2px; }
-.coupon-item{ font-size:.84rem; color:var(--ink); font-weight:700; margin:10px 0 0; }
-.coupon-period{ font-size:.74rem; color:var(--ink-soft); margin:4px 0 0; }
+.coupon-amount .num{ font-size:4.6rem; letter-spacing:-.02em; }
+.coupon-amount .yen{ font-size:1.7rem; }
+.coupon-amount .off{ font-size:1.7rem; margin-left:3px; }
+.coupon-perf{ border-top:2px dashed rgba(226,154,142,.55); margin:14px -6px 0; padding-top:12px; }
+.coupon-item{ font-size:.86rem; color:var(--ink); font-weight:700; margin:0; }
+.coupon-period{ font-size:.72rem; color:var(--ink-soft); margin:5px 0 0; }
 
 .cta-btn{
   display:block; text-align:center; max-width:460px; margin:18px auto 0;
@@ -232,7 +246,7 @@ a{ text-decoration:none; color:inherit; }
   <!-- ヘッダー -->
   <header class="header">
     <div class="header-inner">
-      <span class="header-brand">ソムリエ＠ギフト</span>
+      <img src="images/header/logo.svg" alt="ソムリエ＠ギフト" class="header-logo">
       <span class="header-tag">新商品キャンペーン</span>
     </div>
   </header>
@@ -266,11 +280,17 @@ a{ text-decoration:none; color:inherit; }
       <p class="countdown-label" id="cdLabel">キャンペーン終了まで</p>
       <div class="countdown-timer" id="cdTimer">--<span class="u">日</span>--<span class="u">時間</span></div>
     </div>
-    <div class="coupon" style="margin-top:20px;">
-      <span class="coupon-label">8/1〜8/20限定クーポン</span>
-      <div class="coupon-amount"><span class="num">399</span><span class="yen">円</span><span class="off">OFF</span></div>
-      <p class="coupon-item">ベビー6重ガーゼタオルギフト</p>
-      <p class="coupon-period">※お一人様1回まで／期間中有効</p>
+    <div class="coupon-wrap" style="margin-top:20px;">
+      <span class="confetti" aria-hidden="true"></span>
+      <div class="coupon">
+        <div class="coupon-top">🎉<span class="heart">お得なクーポン配布中！</span>🎉</div>
+        <p class="coupon-sub">8/1〜8/20限定</p>
+        <div class="coupon-amount"><span class="num">399</span><span class="yen">円</span><span class="off">OFF</span></div>
+        <div class="coupon-perf">
+          <p class="coupon-item">ベビー6重ガーゼタオルギフト</p>
+          <p class="coupon-period">※お一人様1回まで／期間中有効</p>
+        </div>
+      </div>
     </div>
     <a href="#" class="cta-btn" data-coupon>399円OFFクーポンを受け取る</a>
     <p class="cta-note">クーポンを獲得してから商品をご購入ください</p>
@@ -333,11 +353,17 @@ a{ text-decoration:none; color:inherit; }
     <span class="section-eyebrow">LAST CHANCE</span>
     <h2 class="section-title">この夏の贈り物に、<br><span class="em">今だけ399円OFF</span></h2>
     <p class="section-lead">8/1〜8/20の期間限定。クーポンを受け取って、<br>ふんわりやさしいガーゼタオルギフトをお得に。</p>
-    <div class="coupon">
-      <span class="coupon-label">8/1〜8/20限定クーポン</span>
-      <div class="coupon-amount"><span class="num">399</span><span class="yen">円</span><span class="off">OFF</span></div>
-      <p class="coupon-item">ベビー6重ガーゼタオルギフト</p>
-      <p class="coupon-period">※お一人様1回まで／期間中有効</p>
+    <div class="coupon-wrap">
+      <span class="confetti" aria-hidden="true"></span>
+      <div class="coupon">
+        <div class="coupon-top">🎉<span class="heart">お得なクーポン配布中！</span>🎉</div>
+        <p class="coupon-sub">8/1〜8/20限定</p>
+        <div class="coupon-amount"><span class="num">399</span><span class="yen">円</span><span class="off">OFF</span></div>
+        <div class="coupon-perf">
+          <p class="coupon-item">ベビー6重ガーゼタオルギフト</p>
+          <p class="coupon-period">※お一人様1回まで／期間中有効</p>
+        </div>
+      </div>
     </div>
     <a href="#" class="cta-btn" data-coupon>399円OFFクーポンを受け取る</a>
     <p class="cta-note">クーポンを獲得してから商品をご購入ください</p>
@@ -435,6 +461,70 @@ setInterval(updateCountdown, 1000);
     });
     dots.forEach((d,i)=> d.classList.toggle('is-active', i===active));
   }, {passive:true});
+})();
+
+/* ===================== クーポンの紙吹雪バースト(ベビーシャワー風) ===================== */
+(function(){
+  const layers = [...document.querySelectorAll('.confetti')];
+  if(!layers.length) return;
+
+  const colors = ['#F3D7D2','#E29A8E','#F7E4C9','#FBEFE6','#CDE7DC','#E4D3EE','#F6C7C0'];
+  const shapes = ['circle','circle','rect','star','heart'];
+  const COUNT = 26;
+
+  function build(layer){
+    layer.innerHTML = '';
+    for(let i=0;i<COUNT;i++){
+      const p = document.createElement('span');
+      p.className = 'confetti-piece';
+      const shape = shapes[Math.floor(Math.random()*shapes.length)];
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      const size = 7 + Math.random()*8;
+      p.style.width = size+'px';
+      p.style.height = (shape==='rect' ? size*0.5 : size)+'px';
+      if(shape==='circle'){ p.style.background=color; p.style.borderRadius='50%'; }
+      else if(shape==='rect'){ p.style.background=color; p.style.borderRadius='2px'; }
+      else if(shape==='star'){ p.textContent='✦'; p.style.color=color; p.style.fontSize=(size+4)+'px'; p.style.lineHeight='1'; p.style.width='auto'; p.style.height='auto'; }
+      else if(shape==='heart'){ p.textContent='♥'; p.style.color=color; p.style.fontSize=(size+3)+'px'; p.style.lineHeight='1'; p.style.width='auto'; p.style.height='auto'; }
+      // 上方向にパーンと広がって落ちる
+      const angle = (Math.random()*Math.PI) ;            // 0〜π(上半分に広がる)
+      const dist = 90 + Math.random()*150;
+      const cx = Math.cos(angle) * dist * (Math.random()<.5?1:1);
+      const up = -Math.sin(angle) * dist;                // 最初は上へ
+      const fall = 120 + Math.random()*160;              // その後さらに落下ぶんを加算
+      p.style.setProperty('--cx', (cx).toFixed(0)+'px');
+      p.style.setProperty('--cy', (up + fall).toFixed(0)+'px');
+      p.style.setProperty('--cr', (Math.random()*720-360).toFixed(0)+'deg');
+      p.style.animationDelay = (Math.random()*0.15)+'s';
+      layer.appendChild(p);
+    }
+  }
+  function burst(layer){
+    build(layer);
+    layer.classList.remove('is-burst');
+    void layer.offsetWidth;
+    layer.classList.add('is-burst');
+  }
+
+  layers.forEach(layer=>{
+    let timer = null;
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            burst(layer);
+            if(!timer){ timer = setInterval(()=>burst(layer), 4500); }
+          }else{
+            if(timer){ clearInterval(timer); timer = null; }
+          }
+        });
+      }, {threshold:.4});
+      io.observe(layer.parentElement);
+    }else{
+      burst(layer);
+      setInterval(()=>burst(layer), 4500);
+    }
+  });
 })();
 </script>
 </body>
