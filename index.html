@@ -12,24 +12,34 @@
 
 <style>
 :root{
-  --blush:#F3D7D2;
-  --blush-deep:#E6A79E;
-  --beige:#EFE4D6;
-  --beige-deep:#DFC9AE;
-  --cream:#FCF7F1;
-  --cream-2:#F7EFE6;
-  --mocha:#8A7461;
-  --ink:#5E4E42;
-  --ink-soft:#8B7B6E;
-  --accent:#E29A8E;
-  --accent-deep:#D67F72;
+  /* メインカラー */
+  --pink:#FF6699;
+  --pink-deep:#EC4E86;
+  --pink-soft:#FFDDE9;
+  --blue:#00CCFF;
+  --blue-deep:#12B6E8;
+  --blue-soft:#D6F5FF;
+  --yellow:#FFFF99;
+  --yellow-soft:#FFFBDA;
   --white:#FFFFFF;
-  --line:#EADFCF;
+  --ink:#4A3F39;
+  --ink-soft:#8C8078;
+  --line:#F2E6D4;
+  /* 旧変数エイリアス(既存の記述との互換用) */
+  --blush:var(--pink-soft);
+  --blush-deep:var(--pink);
+  --accent:var(--blue);       /* さし色 = 水色 */
+  --accent-deep:var(--pink);  /* 強調 = ビビッドピンク */
+  --beige:var(--yellow-soft);
+  --beige-deep:#F2E6A6;
+  --cream:#FFFDF7;
+  --cream-2:var(--yellow-soft);
+  --mocha:#7C6F65;
 }
 *{ box-sizing:border-box; }
 html{ scroll-behavior:smooth; }
 body{
-  margin:0; background:var(--blush); color:var(--ink);
+  margin:0; background:var(--yellow); color:var(--ink);
   font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;
   -webkit-font-smoothing:antialiased; line-height:1.7;
 }
@@ -41,9 +51,10 @@ a{ text-decoration:none; color:inherit; }
 .bg-pattern{
   position:fixed; inset:0; z-index:-1;
   background:
-    radial-gradient(circle at 15% 10%, rgba(255,255,255,.6), transparent 35%),
-    radial-gradient(circle at 88% 88%, rgba(243,215,210,.7), transparent 40%),
-    linear-gradient(160deg, #F7E9E4 0%, #F1DED6 45%, #EAD8C6 100%);
+    radial-gradient(circle at 12% 8%, rgba(0,204,255,.35), transparent 32%),
+    radial-gradient(circle at 90% 12%, rgba(255,102,153,.32), transparent 34%),
+    radial-gradient(circle at 88% 92%, rgba(255,102,153,.28), transparent 38%),
+    linear-gradient(160deg, #FFFFB8 0%, #FFFF99 45%, #FFF27A 100%);
 }
 
 /* ===================== 全体レイアウト ===================== */
@@ -95,22 +106,32 @@ a{ text-decoration:none; color:inherit; }
 .fv-imgwrap{ position:relative; }
 .fv-imgwrap img{ width:100%; display:block; }
 .fv-badge{
-  position:absolute; top:18px; left:18px; z-index:3;
-  width:92px; height:92px; border-radius:50%;
-  background:var(--white); border:2px solid var(--accent);
+  position:absolute; top:14px; left:14px; z-index:4;
+  width:128px; height:128px; border-radius:50%;
+  background:var(--pink); border:3px solid var(--white);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  font-family:"Zen Maru Gothic",sans-serif; color:var(--accent-deep); text-align:center;
-  box-shadow:0 6px 16px rgba(210,127,114,.25); transform:rotate(-8deg);
+  font-family:"Zen Maru Gothic",sans-serif; color:var(--white); text-align:center;
+  box-shadow:0 8px 20px rgba(236,78,134,.45); transform:rotate(-8deg);
 }
-.fv-badge b{ font-size:.62rem; font-weight:700; letter-spacing:.06em; line-height:1.2; }
-.fv-badge .num{ font-size:1.5rem; font-weight:900; line-height:1; margin:1px 0; }
-.fv-badge .off{ font-size:.66rem; font-weight:700; }
+.fv-badge b{ font-size:.72rem; font-weight:700; letter-spacing:.06em; line-height:1.2; }
+.fv-badge .num{ font-size:2.5rem; font-weight:900; line-height:1; margin:1px 0; }
+.fv-badge .off{ font-size:.92rem; font-weight:900; }
+
+/* 写真の上に大きく NEW */
+.fv-new-big{
+  position:absolute; left:0; right:0; bottom:5%; z-index:3; text-align:center;
+  font-family:"Zen Maru Gothic",sans-serif; font-weight:900; color:var(--white);
+  font-size:clamp(80px, 26vw, 210px); line-height:.9; letter-spacing:.04em;
+  text-shadow:0 6px 22px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.25);
+  pointer-events:none;
+}
+.fv-new-big small{ display:block; font-size:.14em; letter-spacing:.4em; margin-top:.1em; font-weight:700; }
 
 .fv-copy{ padding:30px 26px 8px; text-align:center; }
 .fv-new{
   display:inline-block; font-family:"Zen Maru Gothic",sans-serif; font-weight:700;
-  font-size:.7rem; letter-spacing:.18em; color:var(--white);
-  background:var(--blush-deep); border-radius:999px; padding:5px 16px; margin-bottom:16px;
+  font-size:.7rem; letter-spacing:.16em; color:var(--white);
+  background:var(--blue); border-radius:999px; padding:5px 16px; margin-bottom:16px;
 }
 .fv-title{
   font-family:"Zen Maru Gothic",sans-serif; font-weight:900; font-size:1.7rem;
@@ -266,9 +287,10 @@ a{ text-decoration:none; color:inherit; }
         <span class="off">円OFF</span>
       </span>
       <img src="images/hero/001.jpg" alt="6重ガーゼタオルにくるまれた赤ちゃん">
+      <span class="fv-new-big">NEW<small>新商品 新登場</small></span>
     </div>
     <div class="fv-copy">
-      <span class="fv-new">NEW ITEM ｜ 新商品</span>
+      <span class="fv-new">8/1〜8/20 期間限定キャンペーン</span>
       <h1 class="fv-title">ふんわり、やさしい。<br><span class="em">6重ガーゼ</span>タオルギフト</h1>
       <p class="fv-sub">赤ちゃんにも、家族にも。心地よく寄り添う一枚を、<br>出産祝いやプレゼントに。</p>
     </div>
@@ -400,7 +422,9 @@ a{ text-decoration:none; color:inherit; }
 const COUPON_URL = "#";
 
 /* キャンペーン期間 */
-const CAMPAIGN_START = new Date("2026-08-01T00:00:00+09:00");
+/* 本番では開始日時を "2026-08-01T00:00:00+09:00" に戻してください。
+   現在はプレビュー用に「すでに開始済み(終了までカウントダウン)」の状態にしています。 */
+const CAMPAIGN_START = new Date("2026-07-01T00:00:00+09:00");
 const CAMPAIGN_END   = new Date("2026-08-20T23:59:59+09:00");
 
 /* ===================== クーポンボタンにURLを一括設定 ===================== */
@@ -468,9 +492,9 @@ setInterval(updateCountdown, 1000);
   const layers = [...document.querySelectorAll('.confetti')];
   if(!layers.length) return;
 
-  const colors = ['#F3D7D2','#E29A8E','#F7E4C9','#FBEFE6','#CDE7DC','#E4D3EE','#F6C7C0'];
-  const shapes = ['circle','circle','rect','star','heart'];
-  const COUNT = 26;
+  const colors = ['#FF6699','#00CCFF','#FFE24D','#FF9EC0','#7FE0FF','#FFD9E6','#FFF6A8'];
+  const shapes = ['circle','circle','rect','star','heart','star'];
+  const COUNT = 46;
 
   function build(layer){
     layer.innerHTML = '';
@@ -479,7 +503,7 @@ setInterval(updateCountdown, 1000);
       p.className = 'confetti-piece';
       const shape = shapes[Math.floor(Math.random()*shapes.length)];
       const color = colors[Math.floor(Math.random()*colors.length)];
-      const size = 7 + Math.random()*8;
+      const size = 9 + Math.random()*11;
       p.style.width = size+'px';
       p.style.height = (shape==='rect' ? size*0.5 : size)+'px';
       if(shape==='circle'){ p.style.background=color; p.style.borderRadius='50%'; }
